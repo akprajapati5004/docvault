@@ -1,5 +1,4 @@
 /// Central string constants for the entire DocVault application.
-/// Every user-visible text must come from here — no hardcoded strings in UI files.
 class AppStrings {
   AppStrings._();
 
@@ -9,59 +8,74 @@ class AppStrings {
   static const String appVersion = 'v1.0.0';
 
   // ── Splash ─────────────────────────────────────────────────────────────────
-  static const String splashTagline  = appTagline;
-  static const String splashSecured  = 'SECURED BY AES-256';
+  static const String splashTagline = appTagline;
+  static const String splashSecured = 'SECURED BY AES-256';
 
   // ── Onboarding ─────────────────────────────────────────────────────────────
-  static const String onboardingSkip = 'Skip';
-  static const String onboardingNext = 'Next';
+  static const String onboardingSkip       = 'Skip';
+  static const String onboardingNext       = 'Next';
   static const String onboardingGetStarted = 'Get Started';
 
-  // Page 1 — Security
   static const String onboarding1Title    = 'Bank-Grade Security';
   static const String onboarding1Subtitle =
       'Your sensitive documents are encrypted with military-grade AES-256 technology.';
 
-  // Page 2 — OCR
   static const String onboarding2Title    = 'Smart OCR Scanning';
   static const String onboarding2Subtitle =
       'Automatically extract text and metadata from any physical document in seconds.';
 
-  // Page 3 — Access
   static const String onboarding3Title    = 'Access Anywhere';
   static const String onboarding3Subtitle =
       'Sync your encrypted library across all your devices seamlessly and securely.';
 
+  // ── Auth — Shared header ───────────────────────────────────────────────────
+  static const String authAppSubtitleLogin    = 'Access your secure digital vault';
+  static const String authAppSubtitleRegister = 'Create your secure digital vault';
+
   // ── Auth — Login ───────────────────────────────────────────────────────────
-  static const String loginTitle          = 'Welcome back';
-  static const String loginSubtitle       = 'Sign in to your account';
-  static const String loginEmail          = 'Email address';
-  static const String loginPassword       = 'Password';
-  static const String loginForgotPassword = 'Forgot password?';
-  static const String loginButton         = 'Sign In';
-  static const String loginNoAccount      = "Don't have an account?";
-  static const String loginSignUp         = 'Sign Up';
+  static const String loginEmailLabel        = 'Email Address';
+  static const String loginEmailHint         = 'name@company.com';
+  static const String loginPasswordLabel     = 'Password';
+  static const String loginPasswordHint      = '••••••••';
+  static const String loginForgotPassword    = 'Forgot Password?';
+  static const String loginButton            = 'Sign In';
+  static const String loginDivider           = 'OR SECURE UNLOCK';
+  static const String loginBiometricLabel    = 'Sign in with Biometrics';
+  static const String loginBiometricCaption  = 'FAST & SECURE ACCESS';
+  static const String loginNoAccount         = 'New to DocVault?';
+  static const String loginCreateAccount     = 'Create an Account';
+  static const String loginAes               = 'AES-256 Encryption';
+  static const String loginPrivacy           = 'Privacy Policy';
 
   // ── Auth — Register ────────────────────────────────────────────────────────
-  static const String registerTitle           = 'Create account';
-  static const String registerSubtitle        = 'Start securing your documents';
-  static const String registerName            = 'Full name';
-  static const String registerEmail           = 'Email address';
-  static const String registerPassword        = 'Password';
-  static const String registerConfirmPassword = 'Confirm password';
-  static const String registerButton          = 'Create Account';
-  static const String registerHaveAccount     = 'Already have an account?';
-  static const String registerSignIn          = 'Sign In';
+  static const String registerNameLabel          = 'Full Name';
+  static const String registerNameHint           = 'John Doe';
+  static const String registerEmailLabel         = 'Email Address';
+  static const String registerEmailHint          = 'john@example.com';
+  static const String registerPasswordLabel      = 'Password';
+  static const String registerPasswordHint       = '••••••••';
+  static const String registerConfirmLabel       = 'Confirm';
+  static const String registerConfirmHint        = '••••••••';
+  static const String registerSecurityNote       =
+      'Your data is secured with AES-256 military-grade encryption. '
+      'Documents are encrypted before they even leave your device.';
+  static const String registerButton            = 'Create Account';
+  static const String registerHaveAccount       = 'Already have an account?';
+  static const String registerSignIn            = 'Sign In';
+  static const String registerGdpr              = 'GDPR & ISO 27001 Compliant Architecture';
+  static const String registerTermsPrefix       = 'By signing up, you agree to our ';
+  static const String registerTermsLink         = 'Terms of Service';
+  static const String registerCopyright         = '© 2024 DocVault Inc. All rights reserved.';
 
   // ── Dashboard ──────────────────────────────────────────────────────────────
-  static const String dashboardTitle            = 'My Documents';
-  static const String dashboardGreetingMorning  = 'Good morning';
-  static const String dashboardGreetingAfternoon= 'Good afternoon';
-  static const String dashboardGreetingEvening  = 'Good evening';
-  static const String dashboardRecentDocs       = 'Recent Documents';
-  static const String dashboardAllDocs          = 'All Documents';
-  static const String dashboardNoDocs           = 'No documents yet';
-  static const String dashboardNoDocsHint       = 'Upload or scan a document to get started';
+  static const String dashboardTitle             = 'My Documents';
+  static const String dashboardGreetingMorning   = 'Good morning';
+  static const String dashboardGreetingAfternoon = 'Good afternoon';
+  static const String dashboardGreetingEvening   = 'Good evening';
+  static const String dashboardRecentDocs        = 'Recent Documents';
+  static const String dashboardAllDocs           = 'All Documents';
+  static const String dashboardNoDocs            = 'No documents yet';
+  static const String dashboardNoDocsHint        = 'Upload or scan a document to get started';
 
   // ── Category ───────────────────────────────────────────────────────────────
   static const String categoryTitle  = 'Categories';
@@ -81,16 +95,15 @@ class AppStrings {
   static const String uploadTitle    = 'Upload Document';
   static const String uploadSubtitle = 'Choose a file from your device';
   static const String uploadButton   = 'Browse Files';
-  static const String uploadDragHint = 'or drag and drop here';
   static const String uploadSuccess  = 'Document uploaded successfully';
   static const String uploadFailed   = 'Upload failed. Please try again.';
 
   // ── Scanner ────────────────────────────────────────────────────────────────
-  static const String scannerTitle   = 'Scan Document';
-  static const String scannerHint    = 'Point camera at document';
-  static const String scannerCapture = 'Capture';
-  static const String scannerRetake  = 'Retake';
-  static const String scannerUsePhoto= 'Use Photo';
+  static const String scannerTitle    = 'Scan Document';
+  static const String scannerHint     = 'Point camera at document';
+  static const String scannerCapture  = 'Capture';
+  static const String scannerRetake   = 'Retake';
+  static const String scannerUsePhoto = 'Use Photo';
 
   // ── OCR ────────────────────────────────────────────────────────────────────
   static const String ocrTitle      = 'Extract Text';
@@ -113,15 +126,24 @@ class AppStrings {
   static const String trashEmptyAll          = 'Empty Trash';
 
   // ── Settings ───────────────────────────────────────────────────────────────
-  static const String settingsTitle          = 'Settings';
-  static const String settingsAccount        = 'Account';
-  static const String settingsTheme          = 'Appearance';
-  static const String settingsSecurity       = 'Security';
-  static const String settingsEncryption     = 'Encryption';
-  static const String settingsNotifications  = 'Notifications';
-  static const String settingsAbout          = 'About';
-  static const String settingsLogout         = 'Log Out';
-  static const String settingsLogoutConfirm  = 'Are you sure you want to log out?';
+  static const String settingsTitle         = 'Settings';
+  static const String settingsAccount       = 'Account';
+  static const String settingsTheme         = 'Appearance';
+  static const String settingsSecurity      = 'Security';
+  static const String settingsEncryption    = 'Encryption';
+  static const String settingsNotifications = 'Notifications';
+  static const String settingsAbout         = 'About';
+  static const String settingsLogout        = 'Log Out';
+  static const String settingsLogoutConfirm = 'Are you sure you want to log out?';
+
+  // ── Validation ─────────────────────────────────────────────────────────────
+  static const String validationEmailEmpty    = 'Email address is required';
+  static const String validationEmailInvalid  = 'Enter a valid email address';
+  static const String validationPasswordEmpty = 'Password is required';
+  static const String validationPasswordShort = 'Password must be at least 8 characters';
+  static const String validationNameEmpty     = 'Full name is required';
+  static const String validationConfirmEmpty  = 'Please confirm your password';
+  static const String validationConfirmMatch  = 'Passwords do not match';
 
   // ── Common ─────────────────────────────────────────────────────────────────
   static const String commonOk             = 'OK';
