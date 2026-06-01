@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:docvault/custom_ui/auth_widgets.dart';
 import 'package:docvault/custom_ui/custom_button.dart';
 import 'package:docvault/custom_ui/custom_text_field.dart';
-import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
 import 'package:docvault/utils/app_strings.dart';
 import 'login_controller.dart';

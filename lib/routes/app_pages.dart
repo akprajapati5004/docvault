@@ -8,6 +8,8 @@ import 'package:docvault/screen/onboarding/onboarding_screen.dart';
 import 'package:docvault/screen/splash/splash_binding.dart';
 import 'package:docvault/screen/splash/splash_screen.dart';
 
+import '../screen/dashboard/dashboard_shell.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -43,6 +45,13 @@ class AppPages {
       binding: RegisterBinding(),
       transition: Transition.rightToLeft,
       transitionDuration: const Duration(milliseconds: 400),
+    ),
+    GetPage(
+      name: _Paths.dashboard,
+      page: () => const DashboardShell(),
+      binding: DashboardBinding(),
+      transition: Transition.fadeIn,
+      transitionDuration: const Duration(milliseconds: 500),
     ),
   ];
 }

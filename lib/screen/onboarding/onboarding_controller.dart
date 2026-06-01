@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:docvault/routes/app_pages.dart';
 import 'package:docvault/screen/onboarding/onboarding_illustrations.dart';
 import 'package:docvault/screen/onboarding/onboarding_model.dart';
-import 'package:docvault/utils/app_colors.dart';
 import 'package:docvault/utils/app_strings.dart';
 
 class OnboardingController extends GetxController

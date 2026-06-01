@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
-import 'package:docvault/utils/app_strings.dart';
+
+import '../utils/app_icons.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // AuthHeader — logo icon + app name + per-screen subtitle
@@ -16,44 +18,50 @@ class AuthHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: 72,
-          height: 72,
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [AppColors.primaryLight, AppColors.primary],
-            ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withOpacity(0.30),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: const Icon(Icons.lock_rounded, color: Colors.white, size: 34),
+        // Container(
+        //   width: 72,
+        //   height: 72,
+        //   decoration: BoxDecoration(
+        //     gradient: const LinearGradient(
+        //       begin: Alignment.topLeft,
+        //       end: Alignment.bottomRight,
+        //       colors: [AppColors.primaryLight, AppColors.primary],
+        //     ),
+        //     borderRadius: BorderRadius.circular(20),
+        //     boxShadow: [
+        //       BoxShadow(
+        //         color: AppColors.primary.withOpacity(0.30),
+        //         blurRadius: 20,
+        //         offset: const Offset(0, 8),
+        //       ),
+        //     ],
+        //   ),
+        //   // child: const Icon(Icons.lock_rounded, color: Colors.white, size: 34),
+        //
+        // ),
+
+        SvgPicture.asset(
+          AppIcons.appLogo,
+          fit: BoxFit.contain,
         ),
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 4),
 
-        CustomText(
-          text: AppStrings.appName,
-          fontSize: 30,
-          fontWeight: FontWeight.w800,
-          fontFamily: AppFontFamily.poppins,
-          color: AppColors.textPrimary,
-          letterSpacing: -0.5,
-          textAlign: TextAlign.center,
-        ),
+        // CustomText(
+        //   text: AppStrings.appName,
+        //   fontSize: 30,
+        //   fontWeight: FontWeight.w800,
+        //   fontFamily: AppFontFamily.poppins,
+        //   color: AppColors.textPrimary,
+        //   letterSpacing: -0.5,
+        //   textAlign: TextAlign.center,
+        // ),
 
-        const SizedBox(height: 6),
+        // const SizedBox(height: 6),
 
         CustomText(
           text: subtitle,
-          fontSize: 15,
+          fontSize: 12,
           fontWeight: FontWeight.w400,
           fontFamily: AppFontFamily.inter,
           color: AppColors.textSecondary,

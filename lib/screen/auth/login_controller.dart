@@ -39,7 +39,7 @@ class LoginController extends GetxController {
     await Future.delayed(const Duration(seconds: 2));
     isLoading.value = false;
     // On success navigate to dashboard:
-    // Get.offNamed(Routes.dashboard);
+    Get.offNamed(Routes.dashboard);
   }
 
   void onForgotPasswordTapped() {
