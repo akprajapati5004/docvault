@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide SearchController;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:docvault/utils/app_colors.dart';
@@ -14,7 +14,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<SearchController>();
+    final controller = Get.find<DocSearchController>();
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,

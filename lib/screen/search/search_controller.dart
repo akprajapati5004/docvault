@@ -5,7 +5,9 @@ import 'package:docvault/utils/app_strings.dart';
 
 import '../../models/document_model.dart';
 
-class SearchController extends GetxController {
+/// Renamed from [SearchController] to [DocSearchController] to avoid a name
+/// clash with Flutter's built-in [SearchController] from search_anchor.dart.
+class DocSearchController extends GetxController {
   final searchTextController = TextEditingController();
   final RxString query = ''.obs;
   final RxInt selectedFilter = 0.obs;

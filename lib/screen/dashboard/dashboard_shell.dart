@@ -8,6 +8,7 @@ import 'package:docvault/widgets/doc_bottom_nav_bar.dart';
 
 import '../category/category_controller.dart';
 import '../category/category_screen.dart';
+import '../search/search_controller.dart';
 import '../settings/settings_controller.dart';
 import 'dashboard_controller.dart';
 
@@ -19,7 +20,7 @@ class DashboardBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => DashboardController());
     Get.lazyPut(() => CategoriesController());
-    Get.lazyPut(() => SearchController());
+    Get.lazyPut(() => DocSearchController());
     Get.lazyPut(() => SettingsController());
   }
 }

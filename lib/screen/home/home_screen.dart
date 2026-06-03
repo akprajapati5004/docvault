@@ -109,44 +109,82 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          // ── All Documents header ─────────────────────────────────────────
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 4, 20, 8),
-              child: Text(
-                AppStrings.homeAllDocs,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ),
-          ),
+          // ── All Documents header + list — reactive to filter ─────────────
+          SliverToBoxAdapter(
+            child: Obx(() {
+              final docs = controller.filteredDocuments;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header row
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          AppStrings.homeAllDocs,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          '${docs.length} items',
+                          style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textCaption,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
-          // ── Documents list ───────────────────────────────────────────────
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (_, i) {
-                final doc = controller.allDocuments[i];
-                return DocListTile(
-                  fileName: doc.fileName,
-                  date: doc.date,
-                  size: doc.size,
-                  fileIcon: doc.fileIcon,
-                  fileIconColor: doc.fileIconColor,
-                  fileIconBg: doc.fileIconBg,
-                  tagType: doc.tagType,
-                  onMoreTap: () {},
-                  onTap: () {},
-                );
-              },
-              childCount: controller.allDocuments.length,
-            ),
-          ),
+                  // Document list
+                  if (docs.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: Text(
+                          'No documents in this category',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 14,
+                            color: AppColors.textCaption,
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: docs.length,
+                      itemBuilder: (_, i) {
+                        final doc = docs[i];
+                        return DocListTile(
+                          fileName: doc.fileName,
+                          date: doc.date,
+                          size: doc.size,
+                          fileIcon: doc.fileIcon,
+                          fileIconColor: doc.fileIconColor,
+                          fileIconBg: doc.fileIconBg,
+                          tagType: doc.tagType,
+                          onMoreTap: () {},
+                          onTap: () {},
+                        );
+                      },
+                    ),
 
-          const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                  const SizedBox(height: 24),
+                ],
+              );
+            }),
+          ),
         ],
       ),
     );

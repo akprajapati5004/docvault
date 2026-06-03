@@ -3,10 +3,10 @@ import 'dart:math' show cos, sin;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:docvault/custom_ui/auth_widgets.dart';
 import 'package:docvault/custom_ui/custom_button.dart';
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/custom_ui/custom_text_field.dart';
 import 'package:docvault/utils/app_colors.dart';
 import 'package:docvault/utils/app_strings.dart';
@@ -24,24 +24,28 @@ class RegisterScreen extends StatelessWidget {
     ));
 
     final controller = Get.find<RegisterController>();
+    final screenHeight = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: screenHeight * 0.04,
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 48),
-
-                // ── Logo + app name ─────────────────────────────────────────
+                // ── Logo + app name ───────────────────────────────────────
                 const AuthHeader(subtitle: AppStrings.authAppSubtitleRegister),
 
                 const SizedBox(height: 32),
 
-                // ── Main card ───────────────────────────────────────────────
+                // ── Main card ─────────────────────────────────────────────
                 AuthCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +152,7 @@ class RegisterScreen extends StatelessWidget {
                 // Terms + copyright
                 _RegisterFooter(onTermsTap: controller.onTermsTapped),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
               ],
             ),
           ),
@@ -183,14 +187,14 @@ class _SecurityNote extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              AppStrings.registerSecurityNote,
-              style: GoogleFonts.inter(
-                fontSize: 13,
-                fontWeight: FontWeight.w400,
-                color: AppColors.textSecondary,
-                height: 1.55,
-              ),
+            child: CustomText(
+              text: AppStrings.registerSecurityNote,
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+              color: AppColors.textSecondary,
+              height: 1.55,
+              maxLines: 5,
+              overflow: TextOverflow.visible,
             ),
           ),
         ],
@@ -200,7 +204,7 @@ class _SecurityNote extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GDPR banner — dark teal card with hex glow
+// GDPR banner
 // ─────────────────────────────────────────────────────────────────────────────
 class _GdprBanner extends StatelessWidget {
   const _GdprBanner();
@@ -244,15 +248,15 @@ class _GdprBanner extends StatelessWidget {
                       color: Colors.white, size: 14),
                 ),
                 const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    AppStrings.registerGdpr,
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      height: 1.3,
-                    ),
+                const Expanded(
+                  child: CustomText(
+                    text: AppStrings.registerGdpr,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    height: 1.3,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
                   ),
                 ),
               ],
@@ -317,37 +321,34 @@ class _RegisterFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            style: GoogleFonts.inter(
-                fontSize: 12, color: AppColors.textSecondary),
-            children: [
-              TextSpan(text: AppStrings.registerTermsPrefix),
-              WidgetSpan(
-                child: GestureDetector(
-                  onTap: onTermsTap,
-                  child: Text(
-                    AppStrings.registerTermsLink,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: AppColors.textLink,
-                      fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline,
-                      decorationColor: AppColors.textLink,
-                    ),
-                  ),
-                ),
+        // Terms line — RichText kept for inline tappable link
+        Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            CustomText(
+              text: AppStrings.registerTermsPrefix,
+              fontSize: 12,
+              color: AppColors.textSecondary,
+            ),
+            GestureDetector(
+              onTap: onTermsTap,
+              child: CustomText(
+                text: AppStrings.registerTermsLink,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textLink,
+                decoration: TextDecoration.underline,
+                decorationColor: AppColors.textLink,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         const SizedBox(height: 8),
-        Text(
-          AppStrings.registerCopyright,
+        CustomText(
+          text: AppStrings.registerCopyright,
+          fontSize: 12,
+          color: AppColors.textCaption,
           textAlign: TextAlign.center,
-          style: GoogleFonts.inter(
-              fontSize: 12, color: AppColors.textCaption),
         ),
       ],
     );

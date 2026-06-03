@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:docvault/custom_ui/auth_widgets.dart';
 import 'package:docvault/custom_ui/custom_button.dart';
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/custom_ui/custom_text_field.dart';
 import 'package:docvault/utils/app_colors.dart';
 import 'package:docvault/utils/app_strings.dart';
@@ -22,24 +22,30 @@ class LoginScreen extends StatelessWidget {
     ));
 
     final controller = Get.find<LoginController>();
+    final screenHeight = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
+      // resizeToAvoidBottomInset pushes content up when keyboard appears
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Center(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+              horizontal: 24,
+              // Vertical padding scales with screen height for centering
+              vertical: screenHeight * 0.04,
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 48),
-
-                // ── Logo + app name ─────────────────────────────────────────
+                // ── Logo + app name ───────────────────────────────────────
                 const AuthHeader(subtitle: AppStrings.authAppSubtitleLogin),
 
                 const SizedBox(height: 32),
 
-                // ── Main card ───────────────────────────────────────────────
+                // ── Main card ─────────────────────────────────────────────
                 AuthCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                             : controller.emailError.value,
                       )),
 
-                      // Password field (label rendered in row above)
+                      // Password
                       Obx(() => CustomTextField(
                         label: AppStrings.loginPasswordLabel,
                         hint: AppStrings.loginPasswordHint,
@@ -111,12 +117,10 @@ class LoginScreen extends StatelessWidget {
                   onTap: controller.onCreateAccountTapped,
                 ),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
 
                 // Footer
                 const _LoginFooter(),
-
-                const SizedBox(height: 32),
               ],
             ),
           ),
@@ -127,7 +131,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Biometric section — login-screen only
+// Biometric section
 // ─────────────────────────────────────────────────────────────────────────────
 class _BiometricSection extends StatelessWidget {
   const _BiometricSection({required this.onTap});
@@ -138,57 +142,18 @@ class _BiometricSection extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          // CustomText(
-          //   text: AppStrings.loginBiometricLabel,
-          //   fontSize: 15,
-          //   fontWeight: FontWeight.w500,
-          //   fontFamily: AppFontFamily.inter,
-          //   color: AppColors.textPrimary,
-          //   textAlign: TextAlign.center,
-          // ),
-          //
-          // const SizedBox(height: 20),
-          
           CustomButton(
-              label: AppStrings.loginBiometricLabel,
-              onTap: (){}
+            label: AppStrings.loginBiometricLabel,
+            onTap: onTap,
           ),
-
-          // GestureDetector(
-          //   onTap: onTap,
-          //   child: Container(
-          //     width: 76,
-          //     height: 76,
-          //     decoration: BoxDecoration(
-          //       shape: BoxShape.circle,
-          //       color: AppColors.surfaceWhite,
-          //       border: Border.all(color: AppColors.biometricRing, width: 2.5),
-          //       boxShadow: [
-          //         BoxShadow(
-          //           color: AppColors.primary.withOpacity(0.08),
-          //           blurRadius: 16,
-          //           offset: const Offset(0, 4),
-          //         ),
-          //       ],
-          //     ),
-          //     child: const Icon(
-          //       Icons.fingerprint_rounded,
-          //       size: 38,
-          //       color: AppColors.primary,
-          //     ),
-          //   ),
-          // ),
-
           const SizedBox(height: 14),
-
-          Text(
-            AppStrings.loginBiometricCaption,
-            style: GoogleFonts.inter(
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textCaption,
-              letterSpacing: 0.8,
-            ),
+          CustomText(
+            text: AppStrings.loginBiometricCaption,
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textCaption,
+            letterSpacing: 0.8,
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -197,41 +162,36 @@ class _BiometricSection extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Login footer  (AES-256 • Privacy Policy)
+// Login footer — AES-256 • Privacy Policy
 // ─────────────────────────────────────────────────────────────────────────────
 class _LoginFooter extends StatelessWidget {
   const _LoginFooter();
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 4,
       children: [
         const Icon(Icons.shield_outlined, size: 14, color: AppColors.textCaption),
-        const SizedBox(width: 4),
-        Text(
-          AppStrings.loginAes,
-          style: GoogleFonts.inter(
-            fontSize: 12,
-            color: AppColors.textCaption,
-          ),
+        CustomText(
+          text: AppStrings.loginAes,
+          fontSize: 12,
+          color: AppColors.textCaption,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text('•',
-              style: GoogleFonts.inter(
-                  fontSize: 12, color: AppColors.textCaption)),
+        const CustomText(
+          text: '•',
+          fontSize: 12,
+          color: AppColors.textCaption,
         ),
         const Icon(Icons.language_rounded, size: 14, color: AppColors.textCaption),
-        const SizedBox(width: 4),
         GestureDetector(
           onTap: () {},
-          child: Text(
-            AppStrings.loginPrivacy,
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              color: AppColors.textCaption,
-            ),
+          child: CustomText(
+            text: AppStrings.loginPrivacy,
+            fontSize: 12,
+            color: AppColors.textCaption,
           ),
         ),
       ],
