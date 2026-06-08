@@ -10,6 +10,7 @@ import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/custom_ui/custom_text_field.dart';
 import 'package:docvault/utils/app_colors.dart';
 import 'package:docvault/utils/app_strings.dart';
+
 import 'register_controller.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -25,6 +26,8 @@ class RegisterScreen extends StatelessWidget {
 
     final controller = Get.find<RegisterController>();
     final screenHeight = MediaQuery.sizeOf(context).height;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final contentWidth = screenWidth > 600 ? 480.0 : double.infinity;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -37,123 +40,126 @@ class RegisterScreen extends StatelessWidget {
               horizontal: 24,
               vertical: screenHeight * 0.04,
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // ── Logo + app name ───────────────────────────────────────
-                const AuthHeader(subtitle: AppStrings.authAppSubtitleRegister),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: contentWidth),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Logo + subtitle
+                    const AuthHeader(
+                        subtitle: AppStrings.authAppSubtitleRegister),
+                    const SizedBox(height: 32),
 
-                const SizedBox(height: 32),
+                    // Main card
+                    AuthCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Full Name
+                          Obx(() => CustomTextField(
+                            label: AppStrings.registerNameLabel,
+                            hint: AppStrings.registerNameHint,
+                            prefixIcon: Icons.person_outline_rounded,
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
+                            autofillHints: const [AutofillHints.name],
+                            controller: controller.nameCtrl,
+                            onChanged: controller.onNameChanged,
+                            errorText: controller.nameError.value.isEmpty
+                                ? null
+                                : controller.nameError.value,
+                          )),
 
-                // ── Main card ─────────────────────────────────────────────
-                AuthCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Full Name
-                      Obx(() => CustomTextField(
-                        label: AppStrings.registerNameLabel,
-                        hint: AppStrings.registerNameHint,
-                        prefixIcon: Icons.person_outline_rounded,
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        autofillHints: const [AutofillHints.name],
-                        controller: controller.nameCtrl,
-                        onChanged: controller.onNameChanged,
-                        errorText: controller.nameError.value.isEmpty
-                            ? null
-                            : controller.nameError.value,
-                      )),
+                          // Email
+                          Obx(() => CustomTextField(
+                            label: AppStrings.registerEmailLabel,
+                            hint: AppStrings.registerEmailHint,
+                            prefixIcon: Icons.mail_outline_rounded,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            autofillHints: const [AutofillHints.email],
+                            controller: controller.emailCtrl,
+                            onChanged: controller.onEmailChanged,
+                            errorText: controller.emailError.value.isEmpty
+                                ? null
+                                : controller.emailError.value,
+                          )),
 
-                      // Email
-                      Obx(() => CustomTextField(
-                        label: AppStrings.registerEmailLabel,
-                        hint: AppStrings.registerEmailHint,
-                        prefixIcon: Icons.mail_outline_rounded,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        autofillHints: const [AutofillHints.email],
-                        controller: controller.emailCtrl,
-                        onChanged: controller.onEmailChanged,
-                        errorText: controller.emailError.value.isEmpty
-                            ? null
-                            : controller.emailError.value,
-                      )),
+                          // Password
+                          Obx(() => CustomTextField(
+                            label: AppStrings.registerPasswordLabel,
+                            hint: AppStrings.registerPasswordHint,
+                            prefixIcon: Icons.password_rounded,
+                            isPassword: true,
+                            textInputAction: TextInputAction.next,
+                            autofillHints: const [
+                              AutofillHints.newPassword
+                            ],
+                            controller: controller.passwordCtrl,
+                            onChanged: controller.onPasswordChanged,
+                            errorText:
+                            controller.passwordError.value.isEmpty
+                                ? null
+                                : controller.passwordError.value,
+                          )),
 
-                      // Password
-                      Obx(() => CustomTextField(
-                        label: AppStrings.registerPasswordLabel,
-                        hint: AppStrings.registerPasswordHint,
-                        prefixIcon: Icons.password_rounded,
-                        isPassword: true,
-                        textInputAction: TextInputAction.next,
-                        autofillHints: const [AutofillHints.newPassword],
-                        controller: controller.passwordCtrl,
-                        onChanged: controller.onPasswordChanged,
-                        errorText: controller.passwordError.value.isEmpty
-                            ? null
-                            : controller.passwordError.value,
-                      )),
+                          // Confirm Password
+                          Obx(() => CustomTextField(
+                            label: AppStrings.registerConfirmLabel,
+                            hint: AppStrings.registerConfirmHint,
+                            prefixIcon: Icons.shield_outlined,
+                            isPassword: true,
+                            textInputAction: TextInputAction.done,
+                            autofillHints: const [
+                              AutofillHints.newPassword
+                            ],
+                            controller: controller.confirmCtrl,
+                            onChanged: controller.onConfirmChanged,
+                            errorText:
+                            controller.confirmError.value.isEmpty
+                                ? null
+                                : controller.confirmError.value,
+                            bottomSpacing: 20,
+                          )),
 
-                      // Confirm Password
-                      Obx(() => CustomTextField(
-                        label: AppStrings.registerConfirmLabel,
-                        hint: AppStrings.registerConfirmHint,
-                        prefixIcon: Icons.shield_outlined,
-                        isPassword: true,
-                        textInputAction: TextInputAction.done,
-                        autofillHints: const [AutofillHints.newPassword],
-                        controller: controller.confirmCtrl,
-                        onChanged: controller.onConfirmChanged,
-                        errorText: controller.confirmError.value.isEmpty
-                            ? null
-                            : controller.confirmError.value,
-                        bottomSpacing: 20,
-                      )),
+                          // Security note
+                          const _SecurityNote(),
+                          const SizedBox(height: 20),
 
-                      // Security note
-                      const _SecurityNote(),
+                          // Create Account button
+                          Obx(() => CustomButton(
+                            label: AppStrings.registerButton,
+                            onTap: controller.onCreateAccountTapped,
+                            suffixIcon: Icons.arrow_forward_rounded,
+                            isLoading: controller.isLoading.value,
+                            fullWidth: true,
+                            height: 56,
+                          )),
 
-                      const SizedBox(height: 20),
+                          const SizedBox(height: 16),
 
-                      // Create Account button
-                      Obx(() => CustomButton(
-                        label: AppStrings.registerButton,
-                        onTap: controller.onCreateAccountTapped,
-                        suffixIcon: Icons.arrow_forward_rounded,
-                        isLoading: controller.isLoading.value,
-                        fullWidth: true,
-                        height: 56,
-                      )),
+                          Center(
+                            child: AuthInlineLink(
+                              prefix: AppStrings.registerHaveAccount,
+                              linkText: AppStrings.registerSignIn,
+                              onTap: controller.onSignInTapped,
+                            ),
+                          ),
 
-                      const SizedBox(height: 16),
-
-                      // Sign In link
-                      Center(
-                        child: AuthInlineLink(
-                          prefix: AppStrings.registerHaveAccount,
-                          linkText: AppStrings.registerSignIn,
-                          onTap: controller.onSignInTapped,
-                        ),
+                          const SizedBox(height: 8),
+                        ],
                       ),
+                    ),
 
-                      const SizedBox(height: 8),
-                    ],
-                  ),
+                    const SizedBox(height: 24),
+                    const _GdprBanner(),
+                    const SizedBox(height: 24),
+                    _RegisterFooter(onTermsTap: controller.onTermsTapped),
+                    const SizedBox(height: 24),
+                  ],
                 ),
-
-                const SizedBox(height: 24),
-
-                // GDPR banner
-                const _GdprBanner(),
-
-                const SizedBox(height: 24),
-
-                // Terms + copyright
-                _RegisterFooter(onTermsTap: controller.onTermsTapped),
-
-                const SizedBox(height: 24),
-              ],
+              ),
             ),
           ),
         ),
@@ -163,7 +169,7 @@ class RegisterScreen extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Security note badge
+// Security note
 // ─────────────────────────────────────────────────────────────────────────────
 class _SecurityNote extends StatelessWidget {
   const _SecurityNote();
@@ -186,7 +192,7 @@ class _SecurityNote extends StatelessWidget {
                 size: 18, color: AppColors.securityBadgeIcon),
           ),
           const SizedBox(width: 10),
-          Expanded(
+          const Expanded(
             child: CustomText(
               text: AppStrings.registerSecurityNote,
               fontSize: 13,
@@ -280,7 +286,8 @@ class _HexGlowPainter extends CustomPainter {
           const Color(0xFF0ABFBC).withOpacity(0.0),
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), glowPaint);
+    canvas.drawRect(
+        Rect.fromLTWH(0, 0, size.width, size.height), glowPaint);
 
     final hexPaint = Paint()
       ..color = const Color(0xFF0ABFBC).withOpacity(0.13)
@@ -311,7 +318,7 @@ class _HexGlowPainter extends CustomPainter {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Register footer — Terms + copyright
+// Register footer
 // ─────────────────────────────────────────────────────────────────────────────
 class _RegisterFooter extends StatelessWidget {
   const _RegisterFooter({required this.onTermsTap});
@@ -321,18 +328,17 @@ class _RegisterFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Terms line — RichText kept for inline tappable link
         Wrap(
           alignment: WrapAlignment.center,
           children: [
-            CustomText(
+            const CustomText(
               text: AppStrings.registerTermsPrefix,
               fontSize: 12,
               color: AppColors.textSecondary,
             ),
             GestureDetector(
               onTap: onTermsTap,
-              child: CustomText(
+              child: const CustomText(
                 text: AppStrings.registerTermsLink,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
@@ -344,7 +350,7 @@ class _RegisterFooter extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        CustomText(
+        const CustomText(
           text: AppStrings.registerCopyright,
           fontSize: 12,
           color: AppColors.textCaption,

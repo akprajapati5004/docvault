@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DocChip — used for filter chips on Home, Search, and Category screens
+// DocChip
 // ─────────────────────────────────────────────────────────────────────────────
 class DocChip extends StatelessWidget {
   const DocChip({
@@ -49,17 +50,15 @@ class DocChip extends StatelessWidget {
               ),
               const SizedBox(width: 5),
             ],
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                color: isSelected
-                    ? AppColors.chipActiveText
-                    : AppColors.chipInactiveText,
-                letterSpacing: 0.1,
-              ),
+            CustomText(
+              text: label,
+              fontSize: 13,
+              fontWeight:
+              isSelected ? FontWeight.w600 : FontWeight.w500,
+              color: isSelected
+                  ? AppColors.chipActiveText
+                  : AppColors.chipInactiveText,
+              letterSpacing: 0.1,
             ),
           ],
         ),
@@ -100,7 +99,8 @@ class DocChipRow extends StatelessWidget {
               label: labels[i],
               isSelected: i == selectedIndex,
               onTap: () => onSelected(i),
-              prefixIcon: icons != null && i < icons!.length ? icons![i] : null,
+              prefixIcon:
+              icons != null && i < icons!.length ? icons![i] : null,
             ),
           );
         }),

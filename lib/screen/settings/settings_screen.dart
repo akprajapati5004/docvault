@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:docvault/custom_ui/custom_button.dart';
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
 import 'package:docvault/utils/app_strings.dart';
 import 'package:docvault/widgets/doc_app_bar.dart';
@@ -105,7 +106,7 @@ class SettingsScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // ── Sign Out button ───────────────────────────────────────────
+            // ── Sign Out ──────────────────────────────────────────────────
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: CustomButton(
@@ -132,7 +133,7 @@ class SettingsScreen extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// PRO card — navy gradient with PRO label + title + subtitle
+// PRO card
 // ─────────────────────────────────────────────────────────────────────────────
 class _ProCard extends StatelessWidget {
   const _ProCard();
@@ -156,32 +157,24 @@ class _ProCard extends StatelessWidget {
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // PRO badge
           _ProBadge(),
-
           SizedBox(height: 12),
-
-          Text(
-            AppStrings.settingsProTitle,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
+          CustomText(
+            text: AppStrings.settingsProTitle,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            fontFamily: AppFontFamily.poppins,
+            color: Colors.white,
           ),
-
           SizedBox(height: 6),
-
-          Text(
-            AppStrings.settingsProSubtitle,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: Color(0xCCFFFFFF), // white at 80% opacity
-              height: 1.4,
-            ),
+          CustomText(
+            text: AppStrings.settingsProSubtitle,
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+            color: Color(0xCCFFFFFF),
+            height: 1.4,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -200,15 +193,12 @@ class _ProBadge extends StatelessWidget {
         color: AppColors.proCardAccent,
         borderRadius: BorderRadius.circular(6),
       ),
-      child: const Text(
-        AppStrings.settingsProLabel,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-          color: Colors.white,
-          letterSpacing: 1.0,
-        ),
+      child: const CustomText(
+        text: AppStrings.settingsProLabel,
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+        color: Colors.white,
+        letterSpacing: 1.0,
       ),
     );
   }

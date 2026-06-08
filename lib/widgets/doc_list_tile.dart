@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DocTag — small label badge (IDENTITY, HEALTH, LEGAL, ACTION)
+// DocTag
 // ─────────────────────────────────────────────────────────────────────────────
 enum DocTagType { identity, health, legal, action }
 
@@ -39,30 +40,26 @@ class DocTag extends StatelessWidget {
         color: s.bg,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Text(
-        s.label,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 10,
-          fontWeight: FontWeight.w700,
-          color: s.text,
-          letterSpacing: 0.8,
-        ),
+      child: CustomText(
+        text: s.label,
+        fontSize: 10,
+        fontWeight: FontWeight.w700,
+        color: s.text,
+        letterSpacing: 0.8,
       ),
     );
   }
 }
 
 class _TagStyle {
-  const _TagStyle(
-      {required this.label, required this.bg, required this.text});
+  const _TagStyle({required this.label, required this.bg, required this.text});
   final String label;
   final Color bg;
   final Color text;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DocListTile — one document row in the All Documents list
+// DocListTile
 // ─────────────────────────────────────────────────────────────────────────────
 class DocListTile extends StatelessWidget {
   const DocListTile({
@@ -120,48 +117,27 @@ class DocListTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    fileName,
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textPrimary,
-                    ),
+                  CustomText(
+                    text: fileName,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textPrimary,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 3),
                   Row(
                     children: [
-                      Text(
-                        date,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
+                      Flexible(
+                        child: CustomText(
+                          text: size.isNotEmpty ? '$date  ·  $size' : date,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: AppColors.textCaption,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      if (size.isNotEmpty) ...[
-                        const Text(
-                          ' · ',
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            color: AppColors.textCaption,
-                          ),
-                        ),
-                        Text(
-                          size,
-                          style: const TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textCaption,
-                          ),
-                        ),
-                      ],
                     ],
                   ),
                 ],

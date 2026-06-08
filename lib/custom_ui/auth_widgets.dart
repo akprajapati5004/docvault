@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
-
-import '../utils/app_icons.dart';
+import 'package:docvault/utils/app_icons.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AuthHeader — logo icon + app name + per-screen subtitle
+// AuthHeader
 // ─────────────────────────────────────────────────────────────────────────────
 class AuthHeader extends StatelessWidget {
   const AuthHeader({super.key, required this.subtitle});
@@ -18,47 +16,8 @@ class AuthHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Container(
-        //   width: 72,
-        //   height: 72,
-        //   decoration: BoxDecoration(
-        //     gradient: const LinearGradient(
-        //       begin: Alignment.topLeft,
-        //       end: Alignment.bottomRight,
-        //       colors: [AppColors.primaryLight, AppColors.primary],
-        //     ),
-        //     borderRadius: BorderRadius.circular(20),
-        //     boxShadow: [
-        //       BoxShadow(
-        //         color: AppColors.primary.withOpacity(0.30),
-        //         blurRadius: 20,
-        //         offset: const Offset(0, 8),
-        //       ),
-        //     ],
-        //   ),
-        //   // child: const Icon(Icons.lock_rounded, color: Colors.white, size: 34),
-        //
-        // ),
-
-        SvgPicture.asset(
-          AppIcons.appLogo,
-          fit: BoxFit.contain,
-        ),
-
+        SvgPicture.asset(AppIcons.appLogo, fit: BoxFit.contain),
         const SizedBox(height: 4),
-
-        // CustomText(
-        //   text: AppStrings.appName,
-        //   fontSize: 30,
-        //   fontWeight: FontWeight.w800,
-        //   fontFamily: AppFontFamily.poppins,
-        //   color: AppColors.textPrimary,
-        //   letterSpacing: -0.5,
-        //   textAlign: TextAlign.center,
-        // ),
-
-        // const SizedBox(height: 6),
-
         CustomText(
           text: subtitle,
           fontSize: 12,
@@ -73,7 +32,7 @@ class AuthHeader extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AuthCard — white rounded card with elevation shadow
+// AuthCard
 // ─────────────────────────────────────────────────────────────────────────────
 class AuthCard extends StatelessWidget {
   const AuthCard({super.key, required this.child});
@@ -106,7 +65,7 @@ class AuthCard extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AuthDividerRow — horizontal rule with centred label
+// AuthDividerRow
 // ─────────────────────────────────────────────────────────────────────────────
 class AuthDividerRow extends StatelessWidget {
   const AuthDividerRow({super.key, required this.label});
@@ -116,27 +75,27 @@ class AuthDividerRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(child: Divider(color: AppColors.divider, thickness: 1)),
+        const Expanded(
+            child: Divider(color: AppColors.divider, thickness: 1)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            label,
-            style: GoogleFonts.inter(
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textCaption,
-              letterSpacing: 0.8,
-            ),
+          child: CustomText(
+            text: label,
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textCaption,
+            letterSpacing: 0.8,
           ),
         ),
-        const Expanded(child: Divider(color: AppColors.divider, thickness: 1)),
+        const Expanded(
+            child: Divider(color: AppColors.divider, thickness: 1)),
       ],
     );
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AuthInlineLink — "Prefix text? Tappable link"
+// AuthInlineLink
 // ─────────────────────────────────────────────────────────────────────────────
 class AuthInlineLink extends StatelessWidget {
   const AuthInlineLink({
@@ -155,23 +114,19 @@ class AuthInlineLink extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          '$prefix ',
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.textSecondary,
-          ),
+        CustomText(
+          text: '$prefix ',
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textSecondary,
         ),
         GestureDetector(
           onTap: onTap,
-          child: Text(
-            linkText,
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textLink,
-            ),
+          child: CustomText(
+            text: linkText,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textLink,
           ),
         ),
       ],

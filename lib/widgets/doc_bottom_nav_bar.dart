@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
 import 'package:docvault/utils/app_strings.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// DocBottomNavBar — shared bottom navigation for all main screens
-// ─────────────────────────────────────────────────────────────────────────────
 class DocBottomNavBar extends StatelessWidget {
   const DocBottomNavBar({
     super.key,
@@ -71,18 +69,14 @@ class DocBottomNavBar extends StatelessWidget {
                             : AppColors.navBarInactive,
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        item.label,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 11,
-                          fontWeight: isActive
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                          color: isActive
-                              ? AppColors.navBarActive
-                              : AppColors.navBarInactive,
-                        ),
+                      CustomText(
+                        text: item.label,
+                        fontSize: 11,
+                        fontWeight:
+                        isActive ? FontWeight.w600 : FontWeight.w400,
+                        color: isActive
+                            ? AppColors.navBarActive
+                            : AppColors.navBarInactive,
                       ),
                     ],
                   ),

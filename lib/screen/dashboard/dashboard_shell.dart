@@ -31,21 +31,27 @@ class DashboardBinding extends Bindings {
 class DashboardShell extends StatelessWidget {
   const DashboardShell({super.key});
 
-  static const List<Widget> _screens = [
-    HomeScreen(),
-    CategoriesScreen(),
-    SearchScreen(),
-    SettingsScreen(),
-  ];
-
   @override
+
   Widget build(BuildContext context) {
     final controller = Get.find<DashboardController>();
+
+    // Lazily register tab controllers on first shell build
+    Get.lazyPut(() => CategoriesController());
+    Get.lazyPut(() => DocSearchController());
+    Get.lazyPut(() => SettingsController());
+
+    final screens = const [
+      HomeScreen(),
+      CategoriesScreen(),
+      SearchScreen(),
+      SettingsScreen(),
+    ];
 
     return Obx(() => Scaffold(
       body: IndexedStack(
         index: controller.currentTabIndex.value,
-        children: _screens,
+        children: screens,
       ),
       bottomNavigationBar: DocBottomNavBar(
         currentIndex: controller.currentTabIndex.value,

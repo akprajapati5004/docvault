@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SettingsListTile — icon + title + subtitle + trailing chevron / toggle
+// SettingsListTile
 // ─────────────────────────────────────────────────────────────────────────────
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
@@ -53,25 +54,21 @@ class SettingsListTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
-                        ),
+                      CustomText(
+                        text: title,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textPrimary,
+                        maxLines: 1,
                       ),
                       const SizedBox(height: 2),
-                      Text(
-                        subtitle,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textSecondary,
-                          height: 1.4,
-                        ),
+                      CustomText(
+                        text: subtitle,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textSecondary,
+                        height: 1.4,
+                        maxLines: 1,
                       ),
                     ],
                   ),
@@ -98,7 +95,7 @@ class SettingsListTile extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// CloudSyncToggle — the orange "On" badge used in settings
+// CloudSyncToggle
 // ─────────────────────────────────────────────────────────────────────────────
 class CloudSyncToggle extends StatelessWidget {
   const CloudSyncToggle({super.key, required this.isOn});
@@ -112,14 +109,11 @@ class CloudSyncToggle extends StatelessWidget {
         color: isOn ? AppColors.toggleOnBg : AppColors.textCaption,
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(
-        isOn ? 'On' : 'Off',
-        style: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
+      child: CustomText(
+        text: isOn ? 'On' : 'Off',
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
       ),
     );
   }

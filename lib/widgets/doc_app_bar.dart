@@ -1,43 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:docvault/custom_ui/custom_text.dart';
 import 'package:docvault/utils/app_colors.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// AppBar variant enum
+// Variant enum
 // ─────────────────────────────────────────────────────────────────────────────
 enum DocAppBarVariant {
-  /// Home — avatar + greeting text left, bell right
+  /// Home — avatar + greeting left, bell right
   home,
-  /// Categories / Settings — logo avatar + title text left, bell right
+
+  /// Categories / Settings — logo avatar + title left, bell right
   logoTitle,
-  /// Search — active search field fills the bar
+
+  /// Search — full-width search field + bell
   search,
+
+  /// Detail screens — back arrow + title + optional action
+  detail,
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// DocAppBar — single reusable AppBar for every screen
+// DocAppBar — single unified AppBar for every screen in the app
 // ─────────────────────────────────────────────────────────────────────────────
 class DocAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DocAppBar({
     super.key,
     required this.variant,
 
-    // ── Home variant ────────────────────────────────────────────────────────
+    // Home
     this.greeting,
     this.userName,
     this.userAvatarUrl,
 
-    // ── LogoTitle variant ───────────────────────────────────────────────────
+    // LogoTitle + Detail
     this.title,
 
-    // ── Search variant ───────────────────────────────────────────────────────
+    // Detail
+    this.onBackTap,
+    this.actionIcon,
+    this.onActionTap,
+
+    // Search
     this.searchController,
     this.searchHint,
     this.onSearchChanged,
     this.onSearchClear,
 
-    // ── Shared ──────────────────────────────────────────────────────────────
+    // Shared
     this.onNotificationTap,
     this.onAvatarTap,
   });
@@ -49,6 +60,10 @@ class DocAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? userAvatarUrl;
 
   final String? title;
+
+  final VoidCallback? onBackTap;
+  final IconData? actionIcon;
+  final VoidCallback? onActionTap;
 
   final TextEditingController? searchController;
   final String? searchHint;
@@ -66,6 +81,7 @@ class DocAppBar extends StatelessWidget implements PreferredSizeWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
     ));
 
     return Container(
@@ -75,20 +91,24 @@ class DocAppBar extends StatelessWidget implements PreferredSizeWidget {
         left: 20,
         right: 20,
       ),
-      color: AppColors.surfaceWhite,
+      decoration: const BoxDecoration(
+        color: AppColors.surfaceWhite,
+        border: Border(
+          bottom: BorderSide(color: AppColors.border, width: 0.5),
+        ),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(child: _buildLeft()),
+          Expanded(child: _buildLeft(context)),
           const SizedBox(width: 12),
-          if (variant != DocAppBarVariant.search)
-            _NotificationBell(onTap: onNotificationTap),
+          _buildRight(context),
         ],
       ),
     );
   }
 
-  Widget _buildLeft() {
+  Widget _buildLeft(BuildContext context) {
     return switch (variant) {
       DocAppBarVariant.home => _HomeLeft(
         greeting: greeting ?? '',
@@ -96,10 +116,7 @@ class DocAppBar extends StatelessWidget implements PreferredSizeWidget {
         avatarUrl: userAvatarUrl,
         onAvatarTap: onAvatarTap,
       ),
-      DocAppBarVariant.logoTitle => _LogoTitleLeft(
-        title: title ?? '',
-        onAvatarTap: onAvatarTap,
-      ),
+      DocAppBarVariant.logoTitle => _LogoTitleLeft(title: title ?? ''),
       DocAppBarVariant.search => _SearchLeft(
         controller: searchController,
         hint: searchHint ?? 'Search...',
@@ -107,12 +124,27 @@ class DocAppBar extends StatelessWidget implements PreferredSizeWidget {
         onClear: onSearchClear,
         onNotificationTap: onNotificationTap,
       ),
+      DocAppBarVariant.detail => _DetailLeft(
+        title: title ?? '',
+        onBackTap: onBackTap ?? () => Navigator.of(context).maybePop(),
+      ),
     };
+  }
+
+  Widget _buildRight(BuildContext context) {
+    // Search variant handles its own bell internally
+    if (variant == DocAppBarVariant.search) return const SizedBox.shrink();
+
+    if (variant == DocAppBarVariant.detail && actionIcon != null) {
+      return _IconButton(icon: actionIcon!, onTap: onActionTap);
+    }
+
+    return _NotificationBell(onTap: onNotificationTap);
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Home left — avatar + greeting + name
+// Home left
 // ─────────────────────────────────────────────────────────────────────────────
 class _HomeLeft extends StatelessWidget {
   const _HomeLeft({
@@ -136,30 +168,28 @@ class _HomeLeft extends StatelessWidget {
           child: _UserAvatar(url: avatarUrl, size: 40),
         ),
         const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              greeting,
-              style: const TextStyle(
-                fontFamily: 'Inter',
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomText(
+                text: greeting,
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textSecondary,
                 height: 1.4,
+                maxLines: 1,
               ),
-            ),
-            Text(
-              userName,
-              style: const TextStyle(
-                fontFamily: 'Inter',
+              CustomText(
+                text: userName,
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
                 color: AppColors.primary,
+                maxLines: 1,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -167,37 +197,78 @@ class _HomeLeft extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// LogoTitle left — small logo + title (Categories / Settings)
+// LogoTitle left
 // ─────────────────────────────────────────────────────────────────────────────
 class _LogoTitleLeft extends StatelessWidget {
-  const _LogoTitleLeft({required this.title, this.onAvatarTap});
+  const _LogoTitleLeft({required this.title});
   final String title;
-  final VoidCallback? onAvatarTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: const Icon(Icons.lock_rounded, color: Colors.white, size: 18),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: CustomText(
+            text: title,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            fontFamily: AppFontFamily.poppins,
+            color: AppColors.textPrimary,
+            maxLines: 1,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Detail left — back button + title
+// ─────────────────────────────────────────────────────────────────────────────
+class _DetailLeft extends StatelessWidget {
+  const _DetailLeft({required this.title, required this.onBackTap});
+  final String title;
+  final VoidCallback onBackTap;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         GestureDetector(
-          onTap: onAvatarTap,
+          onTap: onBackTap,
           child: Container(
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: AppColors.primarySurface,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.lock_rounded, color: Colors.white, size: 18),
+            child: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 16,
+              color: AppColors.primary,
+            ),
           ),
         ),
-        const SizedBox(width: 10),
-        Text(
-          title,
-          style: const TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
+        const SizedBox(width: 12),
+        Expanded(
+          child: CustomText(
+            text: title,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+            fontFamily: AppFontFamily.inter,
             color: AppColors.textPrimary,
+            maxLines: 1,
           ),
         ),
       ],
@@ -206,7 +277,7 @@ class _LogoTitleLeft extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Search left — full-width search field + bell
+// Search left
 // ─────────────────────────────────────────────────────────────────────────────
 class _SearchLeft extends StatelessWidget {
   const _SearchLeft({
@@ -252,9 +323,9 @@ class _SearchLeft extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       color: AppColors.textPrimary,
                     ),
-                    decoration: const InputDecoration(
-                      hintText: 'Search...',
-                      hintStyle: TextStyle(
+                    decoration: InputDecoration(
+                      hintText: hint,
+                      hintStyle: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
@@ -303,6 +374,20 @@ class _NotificationBell extends StatelessWidget {
         size: 24,
         color: AppColors.textPrimary,
       ),
+    );
+  }
+}
+
+class _IconButton extends StatelessWidget {
+  const _IconButton({required this.icon, this.onTap});
+  final IconData icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Icon(icon, size: 24, color: AppColors.textPrimary),
     );
   }
 }
